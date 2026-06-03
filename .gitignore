@@ -1,0 +1,11 @@
+LocalDoc/
+venv/
+ivenv/
+.env
+.ropeproject
+__pycache__
+.idea/
+.vscode/
+.coverage
+*.pyc
+*.pyo
