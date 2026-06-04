@@ -262,20 +262,21 @@ code {
 
 .icloud-arrow {
   position: absolute;
-  bottom: -2px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
   color: var(--accent);
-  animation: arrow-bounce 1.8s ease-in-out infinite;
+  animation: arrow-bounce 2s ease-in-out infinite;
+  filter: brightness(1.15);
 }
 
 @keyframes arrow-bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-  40%     { transform: translateX(-50%) translateY(6px); opacity: 1; }
-  60%     { transform: translateX(-50%) translateY(6px); opacity: 0; }
-  61%     { transform: translateX(-50%) translateY(-4px); opacity: 0; }
-  80%     { transform: translateX(-50%) translateY(0); opacity: 1; }
+  35%      { transform: translateX(-50%) translateY(5px); opacity: 1; }
+  55%      { transform: translateX(-50%) translateY(5px); opacity: 0; }
+  56%      { transform: translateX(-50%) translateY(-5px); opacity: 0; }
+  75%      { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
 .icloud-particles {
