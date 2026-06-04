@@ -6,9 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('themeToggle');
   const html = document.documentElement;
 
-  // Check for saved theme preference or default to dark
-  const savedTheme = localStorage.getItem('ifetch-theme') || 'dark';
-  html.setAttribute('data-theme', savedTheme);
+  // Detect system preference, then check for a manual override in localStorage
+  const savedTheme = localStorage.getItem('ifetch-theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+  html.setAttribute('data-theme', initialTheme);
+
+  // Listen for system theme changes (only applies if user hasn't manually toggled)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('ifetch-theme')) {
+      html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
 
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
