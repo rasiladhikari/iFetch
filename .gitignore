@@ -10,6 +10,3 @@ __pycache__
 .coverage
 *.pyc
 *.pyo
-
-# Local-only portfolio/marketing website. Keep this out of the public Python CLI repo.
-local-only-portfolio-site/

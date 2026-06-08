@@ -1,0 +1,14 @@
+# Vercel deploys only the public-facing static website from this repo.
+ifetch/
+plugins/
+tests/
+
+requirements.txt
+pytest.ini
+ReadMe.md
+
+.coverage
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo

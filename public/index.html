@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iFetch — Bulk iCloud Drive Downloader</title>
+  <meta name="description" content="iFetch is a powerful terminal utility for downloading files and folders from iCloud Drive. Resume-capable, parallel downloads, differential updates, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ─── NAVIGATION ─── -->
+  <nav id="nav" class="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <div class="icloud-logo">
+          <svg class="icloud-svg" width="36" height="28" viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="icloud-shape" d="M44.8 16.4C44.8 16.1 44.8 15.9 44.8 15.6C44.8 9.3 39.7 4.2 33.4 4.2C29.2 4.2 25.5 6.4 23.4 9.8C22.1 8.7 20.4 8 18.6 8C14.4 8 11 11.4 11 15.6C11 15.9 11 16.1 11 16.4C4.8 17.2 0 22.4 0 28.8C0 35.7 5.5 40 12 40H43.2C50.1 40 56 35.3 56 28.8C56 22.4 51 17.2 44.8 16.4Z" fill="currentColor" opacity="0.9"/>
+          </svg>
+          <svg class="icloud-arrow" width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="arrow-glow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0.5" stdDeviation="1" flood-color="currentColor" flood-opacity="0.5"/>
+              </filter>
+            </defs>
+            <!-- Background knockout stroke for contrast -->
+            <path d="M8 2V13" stroke="var(--bg, #000)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M3.5 9L8 13.5L12.5 9" stroke="var(--bg, #000)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Visible arrow -->
+            <path d="M8 2V13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" filter="url(#arrow-glow)"/>
+            <path d="M3.5 9L8 13.5L12.5 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#arrow-glow)"/>
+          </svg>
+          <div class="icloud-particles">
+            <span class="particle p1"></span>
+            <span class="particle p2"></span>
+            <span class="particle p3"></span>
+          </div>
+        </div>
+        <span class="nav-logo-text">iFetch</span>
+      </a>
+      <div class="nav-links">
+        <a href="#problem">Why</a>
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="#usage">Usage</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">
+          <svg class="theme-icon sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="theme-icon moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="https://github.com/rasiladhikari/iFetch" class="nav-gh" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section id="hero" class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-meta">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Open Source &middot; MIT License</span>
+          <span class="hero-meta-divider" aria-hidden="true"></span>
+          <button type="button" class="field-note-trigger" data-field-note-open>Read My Field Note</button>
+        </div>
+      </div>
+      <h1 class="hero-title">
+        Your iCloud Drive.<br/>
+        <span class="hero-gradient">On Your Terms.</span>
+      </h1>
+      <p class="hero-sub">
+        A powerful terminal utility to download, sync, and back up your iCloud Drive files — with resume support, differential updates, and parallel transfers.
+      </p>
+      <div class="hero-cta">
+        <a href="#install" class="btn btn-primary">Get Started</a>
+        <a href="#features" class="btn btn-ghost">Explore Features</a>
+      </div>
+
+      <!-- Terminal Demo -->
+      <div class="terminal" id="heroTerminal">
+        <div class="terminal-bar">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">zsh — iFetch</span>
+        </div>
+        <div class="terminal-body">
+          <div id="terminalOutput" class="terminal-output"></div>
+          <div class="terminal-cursor"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FIELD NOTE ─── -->
+  <dialog class="field-note-dialog" id="fieldNoteDialog" aria-labelledby="fieldNoteTitle" aria-describedby="fieldNoteDescription">
+    <div class="field-note-shell">
+      <div class="field-note-top">
+        <div>
+          <p class="field-note-kicker">Rasil's Field note</p>
+          <h2 id="fieldNoteTitle">Building iFetch: Making iCloud Transfers Recoverable</h2>
+          <p id="fieldNoteDescription">
+            A lockdown project about getting my files out of iCloud without starting over every time something failed.
+          </p>
+        </div>
+        <button type="button" class="field-note-close" data-field-note-close aria-label="Close field note">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="field-note-body">
+        <p>
+          2020 was strange. The world outside had gone quiet, everyone was locked inside, and my laptop had become the place where almost everything happened.
+        </p>
+        <p>
+          I also had more time than usual to get annoyed by small problems.
+        </p>
+        <p>
+          One of them was iCloud Drive. It worked well when I used it the way Apple expected: save a file on one device, open it on another, and let sync happen somewhere in the background. Then I tried to get a large collection of files out of it.
+        </p>
+        <p>
+          That was much less pleasant.
+        </p>
+        <p>
+          A long download could stall. Starting again could mean repeating work. Even when it looked finished, I had no good answer to a basic question: did I get everything?
+        </p>
+        <p>
+          So, while stuck at home, I started building iFetch. It was a Python command-line tool that gave me more control over downloading an iCloud Drive folder. I could see what it was doing, stop it, and run it again without throwing away all the work it had already done.
+        </p>
+
+        <section class="field-note-section">
+          <h3>Downloading was the easy part</h3>
+          <p>
+            My first plan was short:
+          </p>
+          <ul class="field-note-list">
+            <li>log in to iCloud, including two-factor authentication;</li>
+            <li>find a folder;</li>
+            <li>walk through everything inside it;</li>
+            <li>recreate the same folder structure locally.</li>
+          </ul>
+          <p>
+            That got files onto my computer. It also fell apart as soon as anything went wrong.
+          </p>
+          <p>
+            Large downloads involve a lot of things I do not control. The connection can drop. A signed URL can expire. A remote file reference can go stale. The process can crash. Retrying the whole folder from the beginning works, technically, but it is a terrible way to spend an afternoon.
+          </p>
+          <p>
+            I stopped thinking of the job as one big download. iFetch would handle each file separately, and each file could be downloaded in byte ranges. If one part failed, I wanted to redo that part, not everything before it.
+          </p>
+        </section>
+
+        <section class="field-note-section">
+          <h3>Building around failure</h3>
+          <p>
+            The first version looked like this:
+          </p>
+          <pre class="field-note-code"><code>remote file → bytes → local file</code></pre>
+          <p>
+            The version I trusted looked more like this:
+          </p>
+          <pre class="field-note-code"><code>resolve → enumerate → open → range → temp file → checkpoint
+        → retry or refresh → checksum → archive → replace → report</code></pre>
+          <p>
+            It is longer because the short version kept finding new ways to break.
+          </p>
+          <h4>Keeping the half-finished file</h4>
+          <p>
+            iFetch writes incoming bytes to a <code>.temp</code> file. Next to it, a small <code>.download</code> file records the last completed position.
+          </p>
+          <p>
+            At first, those files looked like cleanup work. They turned out to be the thing that made resume possible. If the connection dropped or I stopped the process, the next run could pick up from the saved position instead of going back to zero.
+          </p>
+          <p>
+            The final destination stays untouched during the download. Once the temporary file is complete, iFetch calculates a checksum, archives the previous local copy under <code>.versions/</code>, and replaces it. A broken transfer should not ruin the good copy I already have.
+          </p>
+          <h4>Retrying stale information is pointless</h4>
+          <p>
+            Some failures needed more than another attempt. iCloud download URLs can expire, and the file object returned by the library can become stale too.
+          </p>
+          <p>
+            When a request returns <code>404</code> or <code>410</code>, iFetch can ask for a new signed URL. If the file object itself no longer works, it resolves the file again from its iCloud path. Other temporary failures wait and retry, with longer pauses after each attempt. If the server sends a <code>Retry-After</code> value, iFetch listens to it.
+          </p>
+          <p>
+            This was one of the more useful lessons from the project. A retry only helps if the input is still valid.
+          </p>
+          <h4>Threads made hidden problems visible</h4>
+          <p>
+            Downloading several files at once made iFetch faster. It also exposed a bug in the iCloud library that I would not have seen in a simple loop.
+          </p>
+          <p>
+            The library loads directory children lazily. While one thread was reading the directory, another could change its internal dictionary. The result was the wonderfully literal error: <code>dictionary changed size during iteration</code>.
+          </p>
+          <p>
+            The fix was to resolve the children first, freeze that list, and only then hand the work to the thread pool. Adding threads was easy. Understanding what those threads touched took longer.
+          </p>
+        </section>
+
+        <section class="field-note-section">
+          <h3>What iFetch can do</h3>
+          <p>
+            The command is simple:
+          </p>
+          <pre class="field-note-code"><code>python ifetch/cli.py Documents/Photos ~/Backups/Photos</code></pre>
+          <p>
+            iFetch can walk through owned and shared iCloud Drive folders, download several files at once, resume partial files, refresh expired cloud references, keep previous local versions, and write a JSON report when it finishes.
+          </p>
+          <p>
+            It also supports include and exclude filters. Directories always remain traversable, even when their names do not match a filter. Otherwise, a filter such as <code>*.pdf</code> could reject the <code>Documents</code> folder before iFetch ever finds <code>Documents/report.pdf</code>.
+          </p>
+          <p>
+            The report became more important than I expected. A progress bar feels reassuring, but it does not tell me much after the terminal closes. The report tells me which files succeeded, which failed, how many bytes moved, and what checksums were produced.
+          </p>
+          <p>
+            I eventually added a Google Drive exporter too. That part is less central to iFetch, but it came from the same itch. I wanted moving my own files between services to feel boring and repeatable.
+          </p>
+        </section>
+
+        <section class="field-note-section">
+          <h3>Where it falls short</h3>
+          <p>
+            The biggest limitation is the feature I called "differential updates." That name promises more than the current code delivers.
+          </p>
+          <p>
+            iFetch uses file size to decide what to do. If there is no local file, it downloads the whole remote file in ranges. If the local file is smaller, it resumes from the local size. If both files have the same size, it assumes nothing changed.
+          </p>
+          <p>
+            That last case is the problem. Two files can have the same size and different contents. iFetch will miss that change because it does not compare remote and local chunk hashes.
+          </p>
+          <p>
+            There are other unfinished parts. Version archives exist, but there is no friendly restore command. The report does not include every skipped file. Profiles only parse JSON even though the documentation mentions YAML. Plugin failures stay out of the main transfer, which is good for the download and bad for debugging the plugin.
+          </p>
+          <p>
+            The largest risk is outside my code: iFetch depends on <code>pyicloud</code>, which talks to Apple's private interfaces. Apple can change those interfaces without warning. This is useful software built on ground I do not own.
+          </p>
+          <p>
+            If I return to the project, I would start with real content comparison, a restore command, better reports, and proper packaging. I would also add continuous integration so the private API failures show up sooner.
+          </p>
+        </section>
+
+        <section class="field-note-section">
+          <h3>What stuck with me</h3>
+          <p>
+            Before iFetch, I thought reliability mostly meant retries. Now I think retries are the least interesting part.
+          </p>
+          <p>
+            The parts I trust are the boring ones: the temporary file that survives a crash, the checkpoint that saves completed work, the old copy moved out of harm's way, and the report waiting at the end. None of them is impressive alone. Together, they make failure less dramatic.
+          </p>
+          <p>
+            I also stopped seeing temporary files as trash. Sometimes a half-finished file is hours of saved work. Deleting it because the process failed would be the tidy thing to do and the wrong thing to do.
+          </p>
+          <p>
+            I do not want to overstate what a file downloader meant during the first month of a pandemic. Still, very little felt under control then. Taking one frustrating job and making it understandable was satisfying.
+          </p>
+        </section>
+
+        <section class="field-note-section">
+          <h3>2026 update: what Apple changed</h3>
+          <p>
+            I came back to this project six years later to see whether Apple had closed the gap.
+          </p>
+          <p>
+            Apple has made parts of the experience better. macOS Sequoia added <a href="https://support.apple.com/guide/mac-help/work-with-folders-and-files-in-icloud-drive-mchl1a02d711/15.0/mac/15.0" target="_blank" rel="noopener noreferrer">Keep Downloaded</a>, which lets users pin iCloud Drive files and folders locally. iCloud.com can download several selected files. Apple's <a href="https://support.apple.com/en-us/102208" target="_blank" rel="noopener noreferrer">Data &amp; Privacy tools</a> can also prepare an account-level copy that includes iCloud documents.
+          </p>
+          <p>
+            In December 2022, Apple announced <a href="https://www.apple.com/newsroom/2022/12/apple-advances-user-security-with-powerful-new-data-protections/" target="_blank" rel="noopener noreferrer">Advanced Data Protection for iCloud</a>. It adds optional end-to-end encryption for iCloud Drive and other categories. That is good for security, but it changes the export story. When Advanced Data Protection is enabled, Apple cannot include the protected iCloud Drive data in a Data &amp; Privacy export. A copy made from a trusted device matters more in that setup.
+          </p>
+          <p>
+            Finder's Keep Downloaded option solves part of the problem I had in 2020. It can keep a folder available on a Mac, which is a big improvement. The files still live inside the synchronized iCloud Drive, though. Keeping them downloaded is not the same as making an independent archive.
+          </p>
+          <p>
+            Apple's current guidance still points users toward <a href="https://support.apple.com/en-us/108306" target="_blank" rel="noopener noreferrer">Finder, Files, or iCloud.com</a>. There is still no official general-purpose iCloud Drive CLI, and CloudKit only gives developers access to their own app containers. It does not let a tool walk through an arbitrary user's whole iCloud Drive.
+          </p>
+          <p>
+            So the answer in 2026 is mixed. Apple has made local access easier and iCloud data more secure. For a repeatable migration or backup with checkpoints, explicit retries, version archives, and a machine-readable report, I would still want a tool like iFetch.
+          </p>
+          <p>
+            That surprised me a little. Six years is a long time in software, but getting all of your files out of a cloud service is still a very different job from keeping them synced inside it.
+          </p>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ─── PROBLEM ─── -->
+  <section id="problem" class="section problem">
+    <div class="container">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">iCloud Wasn't Built for Bulk Downloads</h2>
+      <p class="section-desc">
+        Apple's iCloud Drive is seamless on Apple devices — until you need to download thousands of files, migrate between accounts, or create local backups. Native tools choke on large directories, stall mid-transfer, and offer no resume capability. <strong>iFetch fixes that.</strong>
+      </p>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">🔒</div>
+          <h3>Data Recovery</h3>
+          <p>Disabled iCloud Drive? Your files are trapped in the cloud with no easy way to pull them down in bulk.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🔀</div>
+          <h3>Account Migration</h3>
+          <p>Switching Apple IDs means losing your Drive structure. No built-in tool to export everything at once.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">⚡</div>
+          <h3>Unreliable Sync</h3>
+          <p>Large transfers time out, connections drop, and you're left wondering which files actually made it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURES ─── -->
+  <section id="features" class="section features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Engineered for Reliability</h2>
+      <p class="section-desc">Every feature is designed around one goal: get your data from iCloud to your machine, completely and efficiently.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Parallel Downloads</h3>
+          <p>Configurable worker threads (default 4) for blazing fast concurrent transfers. Saturate your bandwidth.</p>
+          <code>--max-workers=8</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Differential Updates</h3>
+          <p>Only changed chunks are fetched. File-level delta sync saves bandwidth and time on re-runs.</p>
+          <code>--chunk-size=2097152</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⏸️</div>
+          <h3>Resume Downloads</h3>
+          <p>Checkpointed progress tracking. Connection dropped? Pick up exactly where you left off.</p>
+          <code>.temp + tracker files</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Secure 2FA Auth</h3>
+          <p>Full support for two-factor and two-step authentication. Credentials stored in your system keyring.</p>
+          <code>icloud --username=you@me.com</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗂</div>
+          <h3>Profile Filters</h3>
+          <p>Include/exclude glob patterns. Sync only PDFs, skip archives — personalised sync sets per profile.</p>
+          <code>--profile pdf_backup</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗄</div>
+          <h3>Version History</h3>
+          <p>Automatic on-disk archiving of previous file versions. Rollback any file to a prior state.</p>
+          <code>.versions/ directory</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧩</div>
+          <h3>Plugin System</h3>
+          <p>Drop a Python file, subclass BasePlugin, hook into auth, progress, and completion events.</p>
+          <code>plugins/ auto-discover</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Shared Folders</h3>
+          <p>Access and download items shared with your account. Browse shared roots with a single flag.</p>
+          <code>--list-shared</code>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Download Reports</h3>
+          <p>Structured JSON summary of every session — successes, failures, bytes transferred, and changed chunks.</p>
+          <code>download_report.json</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INSTALL ─── -->
+  <section id="install" class="section install">
+    <div class="container">
+      <div class="section-label">Quick Start</div>
+      <h2 class="section-title">Up and Running in 3 Minutes</h2>
+      <p class="section-desc">iFetch runs on Python 3.9+ and works on macOS, Linux, and WSL. Follow these steps to get started.</p>
+
+      <div class="install-steps">
+        <!-- Step 1 -->
+        <div class="install-step">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Create a Virtual Environment</h3>
+            <p>Isolate iFetch's dependencies in a clean virtual environment.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">python3 -m venv ivenv</span>
+<span class="t-prompt">$</span> <span class="t-cmd">source ivenv/bin/activate</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="install-step">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>Install Dependencies</h3>
+            <p>Pull in the Python packages iFetch relies on.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">pip install pyicloud tqdm requests keyring</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="install-step">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Authenticate with iCloud</h3>
+            <p>Store your Apple ID credentials securely in your system keyring. You'll complete 2FA once.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">icloud --username=you@icloud.com</span>
+<span class="t-output">Enter iCloud password: ••••••••</span>
+<span class="t-output">Two-factor authentication required.</span>
+<span class="t-output">Enter verification code: </span><span class="t-cmd">123456</span>
+<span class="t-success">✓ Authentication successful</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="install-step">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <h3>Start Fetching</h3>
+            <p>Point iFetch at an iCloud Drive path and a local destination. That's it.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py Documents/Photos ~/Backups/Photos</span>
+<span class="t-output">======================================================================</span>
+<span class="t-output">iCloud Drive Downloader</span>
+<span class="t-output">Remote Path: Documents/Photos</span>
+<span class="t-output">Local Path: /Users/you/Backups/Photos</span>
+<span class="t-output">Parallel Workers: 4</span>
+<span class="t-output">======================================================================</span>
+<span class="t-success">Authenticating with iCloud... ✓</span>
+<span class="t-output">Downloading from 'Documents/Photos' to '~/Backups/Photos'</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── USAGE / OPTIONS ─── -->
+  <section id="usage" class="section usage">
+    <div class="container">
+      <div class="section-label">Usage</div>
+      <h2 class="section-title">Command Reference</h2>
+      <p class="section-desc">Everything is driven from the terminal. Here's the full reference.</p>
+
+      <div class="usage-layout">
+        <div class="usage-sidebar">
+          <button class="usage-tab active" data-tab="download">Download</button>
+          <button class="usage-tab" data-tab="list">List Contents</button>
+          <button class="usage-tab" data-tab="shared">Shared Items</button>
+          <button class="usage-tab" data-tab="profiles">Profiles</button>
+          <button class="usage-tab" data-tab="plugins">Plugins</button>
+        </div>
+        <div class="usage-panel">
+          <!-- Download -->
+          <div class="usage-content active" id="tab-download">
+            <h3>Download Files & Folders</h3>
+            <p>Recursively download any iCloud Drive path to a local directory with parallel workers, retry logic, and differential updates.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-comment"># Basic download</span>
+<span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py Documents/Photos ~/Downloads/icloud-photos</span>
+
+<span class="t-comment"># Advanced: 8 workers, 5 retries, 2MB chunks, JSON log</span>
+<span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py Documents/Code ~/Work/Code \
+    --email=you@apple.com \
+    --max-workers=8 \
+    --max-retries=5 \
+    --chunk-size=2097152 \
+    --log-file=download.log</span></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- List -->
+          <div class="usage-content" id="tab-list">
+            <h3>List Directory Contents</h3>
+            <p>Preview what's in an iCloud Drive directory without downloading anything.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py Documents --list</span>
+
+<span class="t-output">Listing contents of 'Documents':</span>
+<span class="t-output">──────────────────────────────────────</span>
+<span class="t-output">📁 Photos</span>
+<span class="t-output">📁 Programming</span>
+<span class="t-output">📄 resume.pdf</span>
+<span class="t-output">📄 budget.xlsx</span></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shared -->
+          <div class="usage-content" id="tab-shared">
+            <h3>Shared Items</h3>
+            <p>Browse and download files and folders that others have shared with your iCloud account.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py --list-shared --email you@apple.com</span>
+
+<span class="t-output">Listing top-level shared items:</span>
+<span class="t-output">──────────────────────────────────────</span>
+<span class="t-output">📁 Team Assets</span>
+<span class="t-output">📁 Vacation Photos</span>
+<span class="t-output">📄 contract_final.pdf</span></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profiles -->
+          <div class="usage-content" id="tab-profiles">
+            <h3>Profile-Based Filtering</h3>
+            <p>Define include/exclude glob patterns in a JSON profile to sync only what you need.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-comment"># ~/.ifetch_profiles.json</span>
+<span class="t-output">{</span>
+<span class="t-output">  "pdf_backup": {</span>
+<span class="t-output">    "include": ["Documents/**/*.pdf"],</span>
+<span class="t-output">    "exclude": ["Documents/Private/*"]</span>
+<span class="t-output">  }</span>
+<span class="t-output">}</span>
+
+<span class="t-prompt">$</span> <span class="t-cmd">python ifetch/cli.py Documents ~/PDFs \
+    --profile pdf_backup \
+    --email you@apple.com</span></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plugins -->
+          <div class="usage-content" id="tab-plugins">
+            <h3>Extend with Plugins</h3>
+            <p>Drop a Python file in <code>plugins/</code>, subclass <code>BasePlugin</code>, and hook into authentication, download progress, and completion events.</p>
+            <div class="terminal terminal-sm">
+              <div class="terminal-bar">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+              </div>
+              <div class="terminal-body">
+                <pre><span class="t-comment"># plugins/notify.py</span>
+<span class="t-keyword">from</span> ifetch.plugin <span class="t-keyword">import</span> BasePlugin
+
+<span class="t-keyword">class</span> <span class="t-cmd">Notify</span>(BasePlugin):
+    <span class="t-keyword">def</span> <span class="t-cmd">after_download</span>(self, remote_item, local_path, success, **kw):
+        <span class="t-keyword">if</span> success:
+            print(f<span class="t-string">"✓ {remote_item.name} → {local_path}"</span>)</pre>
+              </div>
+            </div>
+            <p class="usage-note">iFetch auto-discovers all plugins on startup. No configuration needed.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Options Table -->
+      <div class="options-table-wrap">
+        <h3 class="options-title">All CLI Flags</h3>
+        <table class="options-table">
+          <thead>
+            <tr>
+              <th>Flag</th>
+              <th>Description</th>
+              <th>Default</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>--email</code></td><td>iCloud account email (or <code>ICLOUD_EMAIL</code> env var)</td><td>env / prompt</td></tr>
+            <tr><td><code>--max-workers N</code></td><td>Number of concurrent download threads</td><td>4</td></tr>
+            <tr><td><code>--max-retries N</code></td><td>Retry attempts per failed chunk (exponential backoff)</td><td>3</td></tr>
+            <tr><td><code>--chunk-size BYTES</code></td><td>Byte size for each differential-download chunk</td><td>1 MB</td></tr>
+            <tr><td><code>--log-file PATH</code></td><td>Path to save structured JSON logs</td><td>console only</td></tr>
+            <tr><td><code>--list</code></td><td>List directory contents only (no downloads)</td><td>off</td></tr>
+            <tr><td><code>--list-shared</code></td><td>List top-level items shared with you</td><td>off</td></tr>
+            <tr><td><code>--profile NAME</code></td><td>Apply include/exclude patterns from profile file</td><td>no filter</td></tr>
+            <tr><td><code>--profile-file PATH</code></td><td>Custom path to profile JSON</td><td>~/.ifetch_profiles.json</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="icloud-logo icloud-logo-sm">
+            <svg class="icloud-svg" width="28" height="22" viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="icloud-shape" d="M44.8 16.4C44.8 16.1 44.8 15.9 44.8 15.6C44.8 9.3 39.7 4.2 33.4 4.2C29.2 4.2 25.5 6.4 23.4 9.8C22.1 8.7 20.4 8 18.6 8C14.4 8 11 11.4 11 15.6C11 15.9 11 16.1 11 16.4C4.8 17.2 0 22.4 0 28.8C0 35.7 5.5 40 12 40H43.2C50.1 40 56 35.3 56 28.8C56 22.4 51 17.2 44.8 16.4Z" fill="currentColor" opacity="0.9"/>
+            </svg>
+            <svg class="icloud-arrow" width="12" height="14" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="arrow-glow-sm" x="-40%" y="-40%" width="180%" height="180%">
+                  <feDropShadow dx="0" dy="0.5" stdDeviation="1" flood-color="currentColor" flood-opacity="0.5"/>
+                </filter>
+              </defs>
+              <path d="M8 2V13" stroke="var(--bg, #000)" stroke-width="5" stroke-linecap="round"/>
+              <path d="M3.5 9L8 13.5L12.5 9" stroke="var(--bg, #000)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 2V13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" filter="url(#arrow-glow-sm)"/>
+              <path d="M3.5 9L8 13.5L12.5 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#arrow-glow-sm)"/>
+            </svg>
+          </div>
+          <span class="nav-logo-text">iFetch</span>
+        </div>
+        <p class="footer-copy">MIT License &middot; &copy; 2020 Rasil Adhikari</p>
+        <div class="footer-links">
+          <a href="https://github.com/rasiladhikari/iFetch" target="_blank" rel="noopener">GitHub</a>
+          <a href="#features">Features</a>
+          <a href="#install">Install</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
